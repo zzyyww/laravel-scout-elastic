@@ -139,7 +139,10 @@ class ElasticsearchEngine extends Engine
             'from' => (($page * $perPage) - $perPage),
             'size' => $perPage,
         ]);
-
+        // 新版es兼容
+        if (array_key_exists('value', $result['hits']['total'])) {
+            $result['hits']['total'] = $result['hits']['total']['value'];
+        }
         $result['nbPages'] = $result['hits']['total'] / $perPage;
 
         return $result;
